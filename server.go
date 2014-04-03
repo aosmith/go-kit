@@ -1,22 +1,16 @@
 package main
 
 import (
-  "fmt"
-  "net/http"
+  "gokit"
 )
 
 var LogChannel = make(chan string)
 
 func main() {
-  // Serve assets
-  port := ":8080"
-  fmt.Printf("Starting server on %s... ", port)
-  go func() {
-    panic(http.ListenAndServe(port, http.FileServer(http.Dir("public/"))))
-  }()
-  fmt.Printf("done\n")
-  for ;; {
-    log_message := <- LogChannel
-    fmt.Println(log_message)
-  }
+  port := ":8080" // config
+  // Next we use a go routine to serve static assets...
+  go gokit.StartStaticServer(port, LogChannel)
+  // This logger loops forever and prints log messages
+  // to the console.  (Should be configurable)
+  gokit.BlockingLogger(LogChannel)
 }

@@ -8,5 +8,6 @@ Includes bootstrap.
 Useage:
 
 ```
+alias go='GOPATH=`pwd`:$GOPATH go'
 go run server.go
 ```
